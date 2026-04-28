@@ -1,0 +1,17 @@
+diff --git a/Sources/VachaVox/Models/ModelCatalog.swift b/Sources/VachaVox/Models/ModelCatalog.swift
+index 0000000..1111111 100644
+--- a/Sources/VachaVox/Models/ModelCatalog.swift
++++ b/Sources/VachaVox/Models/ModelCatalog.swift
+@@ -222,9 +222,9 @@ struct ModelStore {
+     var rootURL: URL
+     private let fileManager: FileManager
+     private static let legacyModelContainerName = ["cha", "pad"].joined()
+-    static let defaultRootURL = FileManager.default.homeDirectoryForCurrentUser
+-        .appendingPathComponent("vachavox", isDirectory: true)
+-        .appendingPathComponent("models", isDirectory: true)
++    static let defaultRootURL = URL(fileURLWithPath: "/Users/macbookpro/local_ai_models/voice_models")
++        // `modelURL(for:)` appends engine folder (e.g. "parakeet") after this root.
++        .standardizedFileURL
+     static let legacyRootURL = FileManager.default.homeDirectoryForCurrentUser
+         .appendingPathComponent(legacyModelContainerName, isDirectory: true)
+         .appendingPathComponent("models", isDirectory: true)

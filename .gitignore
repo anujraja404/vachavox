@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# SwiftPM / build outputs
+.build/
+build/
+DerivedData/
+.swiftpm/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Local-only workspace directories
+ar-working-folder/
+src/dev_builds/
+
+# Editor and temp files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.tmp
+*.bak

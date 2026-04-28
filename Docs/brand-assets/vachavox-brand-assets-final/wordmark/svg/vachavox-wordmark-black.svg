@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="180" viewBox="0 0 760 180" role="img" aria-label="VachaVox logo">
+  <defs>
+
+  </defs>
+  
+  <text x="20" y="125" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="112" font-weight="400" letter-spacing="0">
+    <tspan fill="#000000">Vacha</tspan><tspan fill="#000000">Vox</tspan>
+  </text>
+</svg>

@@ -1,0 +1,104 @@
+{
+  "primary": {
+    "hex": "#1E71FC",
+    "rgb": "rgb(30, 113, 252)",
+    "hsl": "hsl(218 97% 55%)",
+    "cmyk": "cmyk(88% 55% 0% 1%)"
+  },
+  "primaryHover": {
+    "hex": "#1A63DE",
+    "rgb": "rgb(26, 99, 222)",
+    "hsl": "hsl(218 79% 49%)",
+    "cmyk": "cmyk(88% 55% 0% 13%)"
+  },
+  "primarySoft": {
+    "hex": "#E0EBFF",
+    "rgb": "rgb(224, 235, 255)",
+    "hsl": "hsl(219 100% 94%)",
+    "cmyk": "cmyk(12% 8% 0% 0%)"
+  },
+  "backgroundLight": {
+    "hex": "#FFFFFF",
+    "rgb": "rgb(255, 255, 255)",
+    "hsl": "hsl(0 0% 100%)",
+    "cmyk": "cmyk(0% 0% 0% 0%)"
+  },
+  "backgroundDark": {
+    "hex": "#111820",
+    "rgb": "rgb(17, 24, 32)",
+    "hsl": "hsl(212 31% 10%)",
+    "cmyk": "cmyk(47% 25% 0% 87%)"
+  },
+  "surfaceLight": {
+    "hex": "#F6F8FB",
+    "rgb": "rgb(246, 248, 251)",
+    "hsl": "hsl(216 38% 97%)",
+    "cmyk": "cmyk(2% 1% 0% 2%)"
+  },
+  "surfaceDark": {
+    "hex": "#1B242E",
+    "rgb": "rgb(27, 36, 46)",
+    "hsl": "hsl(212 26% 14%)",
+    "cmyk": "cmyk(41% 22% 0% 82%)"
+  },
+  "textDark": {
+    "hex": "#111820",
+    "rgb": "rgb(17, 24, 32)",
+    "hsl": "hsl(212 31% 10%)",
+    "cmyk": "cmyk(47% 25% 0% 87%)"
+  },
+  "textLight": {
+    "hex": "#F8FAFC",
+    "rgb": "rgb(248, 250, 252)",
+    "hsl": "hsl(210 40% 98%)",
+    "cmyk": "cmyk(2% 1% 0% 1%)"
+  },
+  "textMuted": {
+    "hex": "#59616D",
+    "rgb": "rgb(89, 97, 109)",
+    "hsl": "hsl(216 10% 39%)",
+    "cmyk": "cmyk(18% 11% 0% 57%)"
+  },
+  "borderLight": {
+    "hex": "#D9DEE6",
+    "rgb": "rgb(217, 222, 230)",
+    "hsl": "hsl(217 21% 88%)",
+    "cmyk": "cmyk(6% 3% 0% 10%)"
+  },
+  "borderDark": {
+    "hex": "#34404D",
+    "rgb": "rgb(52, 64, 77)",
+    "hsl": "hsl(211 19% 25%)",
+    "cmyk": "cmyk(32% 17% 0% 70%)"
+  },
+  "disabledLight": {
+    "hex": "#C7CED8",
+    "rgb": "rgb(199, 206, 216)",
+    "hsl": "hsl(215 18% 81%)",
+    "cmyk": "cmyk(8% 5% 0% 15%)"
+  },
+  "disabledDark": {
+    "hex": "#4E5A66",
+    "rgb": "rgb(78, 90, 102)",
+    "hsl": "hsl(210 13% 35%)",
+    "cmyk": "cmyk(24% 12% 0% 60%)"
+  },
+  "focusRing": {
+    "hex": "#5D99FD",
+    "rgb": "rgb(93, 153, 253)",
+    "hsl": "hsl(218 98% 68%)",
+    "cmyk": "cmyk(63% 40% 0% 1%)"
+  },
+  "logoColorPrimary": {
+    "hex": "#111820",
+    "rgb": "rgb(17, 24, 32)",
+    "hsl": "hsl(212 31% 10%)",
+    "cmyk": "cmyk(47% 25% 0% 87%)"
+  },
+  "logoColorAccent": {
+    "hex": "#1E71FC",
+    "rgb": "rgb(30, 113, 252)",
+    "hsl": "hsl(218 97% 55%)",
+    "cmyk": "cmyk(88% 55% 0% 1%)"
+  }
+}

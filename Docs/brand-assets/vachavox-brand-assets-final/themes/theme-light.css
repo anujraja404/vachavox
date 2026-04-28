@@ -1,0 +1,9 @@
+:root, [data-theme="light"] {
+  --color-background: #FFFFFF;
+  --color-surface: #F6F8FB;
+  --color-text: #111820;
+  --color-text-muted: #59616D;
+  --color-border: #D9DEE6;
+  --logo-color-primary: #111820;
+  --logo-color-accent: #1E71FC;
+}

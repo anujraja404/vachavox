@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="160" viewBox="0 0 640 160" role="img" aria-label="VachaVox logo">
+  <defs>
+    <linearGradient id="canvasBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EEF4FF"/>
+    </linearGradient>
+    <linearGradient id="accentLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1E71FC"/>
+      <stop offset="1" stop-color="#7DADFD"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="160" fill="url(#canvasBg)"/>
+  <rect x="13" y="13" width="614" height="134" rx="4" fill="#F7F9FC" opacity="0.78"/>
+  <rect x="13" y="13" width="230" height="6" rx="3" fill="url(#accentLine)"/>
+  <g transform="translate(13 13) scale(0.2722222222222222)">
+    
+
+  <defs>
+
+  </defs>
+  
+  <g transform="translate(33 13) scale(0.84)">
+    <g transform="translate(-18 -23)">
+    <rect x="24" y="74" width="11" height="43" rx="5.5" fill="#111820"/>
+    <rect x="47" y="57" width="13" height="76" rx="6.5" fill="#111820"/>
+    <rect x="70" y="68" width="13" height="112" rx="6.5" fill="#111820"/>
+    <rect x="93" y="89" width="13" height="132" rx="6.5" fill="#111820"/>
+    <rect x="116" y="112" width="13" height="118" rx="6.5" fill="#111820"/>
+    <rect x="139" y="134" width="13" height="86" rx="6.5" fill="#1E71FC"/>
+    <rect x="162" y="113" width="13" height="86" rx="6.5" fill="#1E71FC"/>
+    <rect x="185" y="89" width="13" height="132" rx="6.5" fill="#111820"/>
+    <rect x="208" y="68" width="13" height="112" rx="6.5" fill="#111820"/>
+    <rect x="231" y="57" width="13" height="76" rx="6.5" fill="#111820"/>
+    <rect x="254" y="74" width="11" height="43" rx="5.5" fill="#111820"/>
+    </g>
+  </g>
+  <text x="326" y="177" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="118" font-weight="400" letter-spacing="0">
+    <tspan fill="#111820">Vacha</tspan><tspan fill="#1E71FC">Vox</tspan>
+  </text>
+
+
+  </g>
+  <text x="13" y="78" fill="#111820" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="30" font-weight="500" letter-spacing="0">VachaVox</text>
+  <text x="13" y="102" fill="#59616D" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="400" letter-spacing="0">Header logo</text>
+  <g transform="translate(589 109) scale(0.1484375)">
+    
+
+  <defs>
+
+  </defs>
+  
+  <g transform="translate(19.2 24.4) scale(0.86)">
+    <g transform="translate(-18 -23)">
+    <rect x="24" y="74" width="11" height="43" rx="5.5" fill="#111820"/>
+    <rect x="47" y="57" width="13" height="76" rx="6.5" fill="#111820"/>
+    <rect x="70" y="68" width="13" height="112" rx="6.5" fill="#111820"/>
+    <rect x="93" y="89" width="13" height="132" rx="6.5" fill="#111820"/>
+    <rect x="116" y="112" width="13" height="118" rx="6.5" fill="#111820"/>
+    <rect x="139" y="134" width="13" height="86" rx="6.5" fill="#1E71FC"/>
+    <rect x="162" y="113" width="13" height="86" rx="6.5" fill="#1E71FC"/>
+    <rect x="185" y="89" width="13" height="132" rx="6.5" fill="#111820"/>
+    <rect x="208" y="68" width="13" height="112" rx="6.5" fill="#111820"/>
+    <rect x="231" y="57" width="13" height="76" rx="6.5" fill="#111820"/>
+    <rect x="254" y="74" width="11" height="43" rx="5.5" fill="#111820"/>
+    </g>
+  </g>
+
+
+  </g>
+  <text x="13" y="147" fill="#59616D" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="400">vachavox-header-logo-light</text>
+</svg>
