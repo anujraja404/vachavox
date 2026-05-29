@@ -1,9 +1,0 @@
-:root[data-theme="dark"], [data-theme="dark"] {
-  --color-background: #111820;
-  --color-surface: #1B242E;
-  --color-text: #F8FAFC;
-  --color-text-muted: #B8C1CC;
-  --color-border: #34404D;
-  --logo-color-primary: #F8FAFC;
-  --logo-color-accent: #1E71FC;
-}

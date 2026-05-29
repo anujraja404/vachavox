@@ -786,9 +786,21 @@ private struct HotkeysSettings: View {
                         .accessibilityLabel("Custom dictation shortcut")
                 }
 
-                Text("Fn can be used as the default hold-to-dictate shortcut. Choose Custom shortcut for another key combination.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Recommended macOS settings for Fn")
+                        .font(.callout.weight(.semibold))
+                    Text("In macOS Keyboard settings, set Dictation shortcut to Press Mic / F5 and set Press Globe key to Do Nothing. This frees Fn for VachaVox and is the tested setup for hold-to-dictate and toggle mode.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Button {
+                        SystemSettingsOpener.openKeyboardSettings()
+                    } label: {
+                        Label("Open Keyboard Settings", systemImage: "keyboard")
+                    }
+                    .accessibilityLabel("Open Keyboard Settings")
+                }
+                .padding(.top, 2)
             }
 
             SettingsSection("Behavior Summary", systemImage: "text.alignleft") {
@@ -925,7 +937,7 @@ private struct PrivacySettings: View {
             SettingsSection("About", systemImage: "info.circle") {
                 InfoLine("Version", "\(bundleVersion) (\(bundleBuild))")
                 InfoLine("Selected engine", model.selectedCatalogModel.engine.label)
-                InfoLine("License", "GPLv3")
+                InfoLine("License", "MIT")
                 Text("Dependencies: WhisperKit, KeyboardShortcuts, and FluidAudio.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -943,11 +955,11 @@ private struct PrivacySettings: View {
     }
 
     private var bundleVersion: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.4.1"
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.6.3"
     }
 
     private var bundleBuild: String {
-        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "13"
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "23"
     }
 
     private func revealModelsFolder() {

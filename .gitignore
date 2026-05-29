@@ -23,3 +23,13 @@ src/dev_builds/
 *.swo
 *.tmp
 *.bak
+
+# Runtime logs
+log/
+
+# QA artifacts (screenshots, test archives, UI inventories)
+QA/
+
+# Brand asset binaries (large images/zips — use GitHub Releases for distribution)
+Docs/brand-assets/vachavox-brand-assets-final/
+Docs/brand-assets/vachavox-brand-assets-final.zip
