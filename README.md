@@ -92,6 +92,6 @@ Vachavox is licensed under the MIT License with a Commons Clause.
 - Selling products/services built on Vachavox
 - Any commercial resale
 
-For commercial licensing inquiries, contact: anuj@vayuvega.com
+For commercial licensing inquiries, contact: [anujrajaceo@gmail.com](mailto:anujrajaceo@gmail.com) or visit [anujraja.com](https://anujraja.com)
 
 Built on [FluidAudio](https://github.com/FluidInference/FluidAudio), [WhisperKit](https://github.com/argmaxinc/WhisperKit), and [KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts).
