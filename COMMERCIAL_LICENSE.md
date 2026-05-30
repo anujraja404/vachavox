@@ -20,7 +20,7 @@ You need a paid commercial license if you want to:
 
 ## How to get a commercial license
 
-Contact: **anujrajaceo@gmail.com**
+Contact: **anujrajaceo@gmail.com** or **anujraja.com**
 
 Include:
 - What you're building
