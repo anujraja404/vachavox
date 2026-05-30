@@ -1,0 +1,88 @@
+--- a/Sources/VachaVox/App/AppModel.swift
++++ b/Sources/VachaVox/App/AppModel.swift
+@@
+-    @Published var lastTranscript = ""
++    @Published var lastTranscript = ""
++    @Published var popupResultText = ""
++    @Published var popupResultVisible = false
++    @Published var popupResultFading = false
+@@
+-        recordingOverlayAnchor = nil
++        recordingOverlayAnchor = nil
++        popupResultText = ""
++        popupResultVisible = false
++        popupResultFading = false
+
+--- a/Sources/VachaVox/App/DictationCoordinator.swift
++++ b/Sources/VachaVox/App/DictationCoordinator.swift
+@@
+-    private var fileTranscriptionTask: Task<Void, Never>?
++    private var fileTranscriptionTask: Task<Void, Never>?
++    private var popupDismissTask: Task<Void, Never>?
+@@
+-                activePasteTarget = nil
++                presentResultPopup(with: transcript)
++                activePasteTarget = nil
+@@
++    static func formattedPopupText(from transcript: String) -> String? { /* ... */ }
++    private func presentResultPopup(with transcript: String) { /* ... */ }
+
+--- a/Sources/VachaVox/UI/RecordingOverlayAnchor.swift
++++ b/Sources/VachaVox/UI/RecordingOverlayAnchor.swift
+@@
++    static let resultMaxWidth: CGFloat = 540
++    static let resultMinWidth: CGFloat = 260
+-    static let fallbackTopInset: CGFloat = 16
++    static let fallbackTopInset: CGFloat = 10
++    static func menuBarCenteredOrigin(overlaySize: CGSize, visibleFrame: CGRect) -> CGPoint { /* ... */ }
+
+--- a/Sources/VachaVox/UI/RecordingOverlayWindowController.swift
++++ b/Sources/VachaVox/UI/RecordingOverlayWindowController.swift
+@@
+-        model.$phase
+-            .combineLatest(model.$recordingOverlayAnchor)
+-            .sink { [weak self] phase, anchor in
+-                self?.syncVisibility(phase: phase, anchor: anchor)
++        model.$phase
++            .combineLatest(model.$popupResultVisible, model.$popupResultText)
++            .sink { [weak self] phase, popupVisible, popupText in
++                self?.syncVisibility(phase: phase, popupVisible: popupVisible, popupText: popupText)
+@@
++    private func position() { /* centered on active display visibleFrame */ }
++    private func activeMenuBarScreen() -> NSScreen? { /* key/main window, then mouse location */ }
++    private static func idealSize(phase: DictationPhase, popupVisible: Bool, popupText: String) -> CGSize { /* ... */ }
+@@
+-            Image(nsImage: logoImage)
++            Image(systemName: iconName)
+@@
+-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
++        .background(backgroundSurface)
++        .opacity(resultOpacity)
++        .animation(reduceMotion ? nil : .easeOut(duration: 1.0), value: model.popupResultFading)
+
+--- a/Tests/VachaVoxTests/RecordingOverlayPositioningTests.swift
++++ b/Tests/VachaVoxTests/RecordingOverlayPositioningTests.swift
+@@
+-        XCTAssertEqual(origin.y, 462, accuracy: 0.001)
++        XCTAssertEqual(origin.y, 468, accuracy: 0.001)
++    }
++
++    func testMenuBarCenteredOriginAlignsToVisibleFrameMidpoint() { /* ... */ }
+
+--- a/Tests/VachaVoxTests/ReadinessAndOutputTests.swift
++++ b/Tests/VachaVoxTests/ReadinessAndOutputTests.swift
+@@
++    func testFormattedPopupTextTrimsWhitespaceAndClipsTo250() { /* ... */ }
++    func testFormattedPopupTextReturnsNilWhenEmptyAfterTrim() { /* ... */ }
+
+--- a/README.md
++++ b/README.md
+@@
++- Shows a centered top popup during dictation and briefly previews the generated transcript text after completion.
+
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@
++## Unreleased
++### Improvements
++- Reimagined centered top dictation popup and post-transcription preview with timed fade-out.
