@@ -15,6 +15,7 @@ DerivedData/
 # Local-only workspace directories
 ar-working-folder/
 src/dev_builds/
+References/
 
 # Editor and temp files
 .idea/
@@ -29,7 +30,3 @@ log/
 
 # QA artifacts (screenshots, test archives, UI inventories)
 QA/
-
-# Brand asset binaries (large images/zips — use GitHub Releases for distribution)
-Docs/brand-assets/vachavox-brand-assets-final/
-Docs/brand-assets/vachavox-brand-assets-final.zip
