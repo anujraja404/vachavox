@@ -1,0 +1,22 @@
+# VachaVox
+
+> Local-first voice dictation for macOS. Hold a key, speak, and your words appear where your cursor is.
+
+## Facts
+- Download: https://github.com/anujraja404/vachavox/releases/download/v0.6.3/VachaVox-v0.6.3-B23.zip
+- Platform: macOS 14.0 or later
+- Stack: Swift 5.10, Core ML, FluidAudio, WhisperKit, KeyboardShortcuts
+- Models: local Core ML voice model required; Parakeet and Whisper-family models supported
+- Privacy: no audio or transcript data is uploaded by the app; analytics are not included
+- License: MIT License with a Commons Clause
+
+## Build
+- swift build
+- swift test
+- Scripts/package_app.sh
+
+## Links
+- Repository: https://github.com/anujraja404/VachaVox
+- Privacy: https://github.com/anujraja404/VachaVox/blob/main/Docs/privacy.md
+- Model installation: https://github.com/anujraja404/VachaVox/blob/main/Docs/model-installation.md
+- Author: Anuj Raja <anujrajaceo@gmail.com>
