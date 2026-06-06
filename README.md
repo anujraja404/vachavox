@@ -18,6 +18,12 @@
   <a href="CHANGELOG.md">Changelog</a>
 </p>
 
+
+<p align="center">
+  <h3 align="center">VachaVox Landing Page</h3>
+  <a href="[https://github.com/anujraja404/vachavox/actions/workflows/ci.yml](https://anujraja.com/VachaVox/)"></a>
+</p>
+
 ---
 
 ## Screenshots
