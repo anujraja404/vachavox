@@ -17,8 +17,8 @@
   &nbsp;·&nbsp;
   <a href="CHANGELOG.md">Changelog</a>
   &nbsp;·&nbsp;
-  <a href="[CHANGELOG.md](https://anujraja.com/VachaVox/)">Landing-Page</a>
-  
+  <a href="https://anujraja.com/VachaVox">Landing-Page</a>
+  &nbsp;·&nbsp;
 </p>
 
 ---
