@@ -65,11 +65,11 @@ Voice models are not bundled — download them separately after building. See [D
 
 **Current status:** VachaVox v0.6.3 is stable and working exactly as intended for daily personal use. I dictate into it every day — it does its job quietly and stays out of the way.
 
-**Bug reports:** I'm not actively hunting for bugs, but if you hit something reproducible, [open an issue](https://github.com/anujraja404/vachavox/issues) and I'll take a look. Clear steps to reproduce go a long way.
+**Bug reports:** I'm not actively hunting for bugs, but if you hit something reproducible, [open an issue](https://github.com/anujraja/VachaVox/issues) and I'll take a look. Clear steps to reproduce go a long way.
 
 **Future plans:** A few things are in the pipeline — no ETAs, no promises. The one I'm most interested in is **refining transcribed text** (light post-processing to clean up filler words and punctuation before paste). Other ideas exist. Not feature-maxing. This app does one thing well and I'd like to keep it that way.
 
-**Using this app? Have a feature idea?** [Open an issue](https://github.com/anujraja404/vachavox/issues) or reach out — I'd genuinely love to hear how you're using it and what you're thinking.
+**Using this app? Have a feature idea?** [Open an issue](https://github.com/anujraja/VachaVox/issues) or reach out — I'd genuinely love to hear how you're using it and what you're thinking.
 
 ## Documentation
 
