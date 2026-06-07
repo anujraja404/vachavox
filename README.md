@@ -7,11 +7,11 @@
 <p align="center">Local-first voice dictation for macOS. Hold a key, speak, and your words appear where your cursor is — no cloud, no subscription.</p>
 
 <p align="center">
-  <a href="https://github.com/anujraja404/vachavox/actions/workflows/ci.yml"><img src="https://github.com/anujraja404/vachavox/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/anujraja/VachaVox/actions/workflows/ci.yml"><img src="https://github.com/anujraja/VachaVox/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/anujraja404/vachavox/releases/download/v0.6.3/VachaVox-v0.6.3-B23.zip">⬇ Download v0.6.3 for macOS</a>
+  <a href="https://github.com/anujraja/VachaVox/releases/download/v0.6.3/VachaVox-v0.6.3-B23.zip">⬇ Download v0.6.3 for macOS</a>
   &nbsp;·&nbsp;
   <a href="Docs/privacy.md">Privacy</a>
   &nbsp;·&nbsp;
