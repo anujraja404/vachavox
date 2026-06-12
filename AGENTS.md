@@ -1,5 +1,12 @@
 # VachaVox Agent Instructions
 
+## Purpose
+
+These instructions keep coding agents aligned with VachaVox as a local-first
+SwiftPM macOS dictation app. Follow higher-priority system, developer, and user
+instructions first; use this file for repository-specific constraints,
+commands, and completion criteria.
+
 ## Non-Negotiable Ignore Rule
 
 - Do not read, search, reference, copy from, or otherwise use `ar-working-folder/`.
@@ -17,70 +24,72 @@
 - Tests: `Tests/VachaVoxTests/`.
 - Scripts: `Scripts/`.
 - Dev scripts: `src/scripts/`.
-- Dev testing apps and patch-check builds live under `src/dev_builds/` and are ignored from git.
-- Development patch overrides: `src/patch/`.
+- Dev testing builds live under `src/dev_builds/` and are ignored from git.
 - Current docs: `README.md`, `CHANGELOG.md`, `Docs/`, and `References/`.
 - QA snapshots and inventories: `QA/`.
 - Build products and app archives: `build/` and `.build/`.
+
+## Working Style And Done Criteria
+
+- Read the affected source, docs, and scripts before changing behavior.
+- Keep edits scoped to the task and preserve existing app architecture unless
+  the user explicitly asks for a redesign or rewrite.
+- Use `rg` or `rg --files` for targeted search. Expand the search only when a
+  required file, owner, date, command, or behavior is still missing.
+- For longer or tool-heavy work, start with a short visible update, then keep
+  plans tied to concrete files, commands, and validation.
+- Done means the requested behavior is implemented or the blocker is named,
+  relevant docs/changelog entries are updated, and the most relevant validation
+  has run or is explicitly reported as skipped with a reason.
 
 ## Build And Test
 
 - Prefer SwiftPM commands; this is not an Xcode project.
 - Run `swift test` after code changes.
-- Run `Scripts/package_app.sh` for release packaging.
+- Run `Scripts/package_app.sh` only when an explicit release build is requested.
 - Run `Scripts/compile_and_run.sh` for a local app launch smoke test.
-- Run `src/scripts/create_dev_test_build.sh` for local dev test builds in `src/dev_builds/`; it applies `src/patch/**/*.patch` temporarily, builds a test app, then reverts those patch changes from the working tree.
+- Run `src/scripts/create_dev_test_build.sh` to create a timestamped current-source dev test build and refresh `src/dev_builds/VachaVox Dev Latest.app` after code changes.
 - When searching, exclude generated/build outputs: `--glob '!ar-working-folder/**' --glob '!build/**' --glob '!.build/**'`.
 
 ## Codex Capabilities
 
-- When skills, agents, or plugins matter for the task, inspect the live local capability folders instead of assuming a stale list:
+- When skills, agents, or plugins matter, inspect the live local capability
+  folders instead of relying on a static list:
   - `/Users/macbookpro/.codex/agents`
   - `/Users/macbookpro/.codex/skills`
   - `/Users/macbookpro/.agents/skills`
   - `/Users/macbookpro/.codex/plugins/cache`
 - Keep the `ar-working-folder/` ignore rule when inspecting capabilities or project files.
-- Use the GitHub plugin/skill for GitHub repository work when available, including repo creation, auth, and pushes. Prefer `gh` for the actual git remote operations once authenticated.
-- Use a matching skill when the task clearly fits, especially for planning, UI work, docs, release, debugging, accessibility, packaging, or GitHub work.
-- Project-relevant skills quick reference:
-  - Planning/context: `create-plan`, `codebase-orientation`, `architecture-review`.
-  - Swift/macOS: `swift-concurrency-expert`, `swiftui-ui-patterns`, `swiftui-view-refactor`, `swiftui-performance-audit`, `swiftui-liquid-glass`, `macos-spm-app-packaging`, `ios-debugger-agent`.
-  - UI/accessibility: `frontend-design`, `frontend-responsive-design-standards`, `accessibility-basic-check`, `agent-browser`, `screenshot`.
-  - Testing/debugging: `unit-test-starter`, `integration-test-planner`, `debugging-checklist`, `bug-repro-plan`, `linter-fix-guide`.
-  - Docs/release: `doc`, `changelog-generator`, `release-notes-drafter`, `release-audit`, `app-store-changelog`.
-  - GitHub/config/deps/security: `github`, `git-basic-helper`, `gh-fix-ci`, `gh-address-comments`, `config-file-explainer`, `dependency-risk-audit`, `dependency-upgrade-plan`, `security-quick-scan`.
+- Use matching skills for clear task categories: Swift/macOS work, packaging,
+  UI/accessibility, debugging, docs/release, GitHub, config, dependency, and
+  security tasks.
+- Use the GitHub plugin/skill for GitHub repository work when available,
+  including repo creation, auth, and pushes. Prefer `gh` for git remote
+  operations once authenticated.
 - Use subagents only when the active Codex runtime supports them and the user explicitly asks for agents, subagents, delegation, or parallel work.
-- For subagent work, give each agent a concrete scope, avoid overlapping file ownership, and integrate results before finalizing.
-- Project-relevant agents quick reference:
-  - Code discovery: `explorer`, `code-mapper`, `code-archaeologist`.
-  - Implementation: `worker`, `implementation_worker`, `swift-expert`, `swiftui-expert`, `ui-engineer`.
-  - UI/accessibility: `ui-designer`, `ui-visual-validator`, `accessibility-expert`, `accessibility-specialist`, `accessibility-tester`.
-  - Review/testing: `reviewer`, `code-reviewer`, `senior-code-reviewer`, `tester`, `test-automator`, `qa-expert`.
-  - Debug/build/docs: `debugger`, `build-engineer`, `docs_researcher`, `documentation-engineer`.
-  - Security/release/git: `security-auditor`, `git-ops`, `git-workflow-manager`.
+- For subagent work, give each agent a concrete scope, avoid overlapping file
+  ownership, and integrate results before finalizing.
 
-## Packaging And Versions
+## Unreleased Workflow
 
-- `version.env` is the packaging source of truth.
-- `APP_NAME` and `PRODUCT_NAME` must remain `VachaVox`.
-- Update `MARKETING_VERSION` in `version.env` for user-visible app changes:
-  - Minor bump for features, UI behavior changes, model/output/permission behavior changes, packaging changes, and meaningful UX work.
-  - Patch bump for bug fixes, docs-visible corrections, copy fixes, and small non-breaking improvements.
-- Bump `BUILD_NUMBER` for each packaged or distributable build, even when `MARKETING_VERSION` does not change.
-- Keep `README.md` current version, README version notes, and `CHANGELOG.md` aligned with `version.env`.
-- `Scripts/package_app.sh` must create both:
-  - `build/VachaVox.app` as the current runnable app.
-  - `build/VachaVox V${MARKETING_VERSION} B${BUILD_NUMBER}.app` as the archived build.
-- Do not overwrite an existing versioned `.app`; bump `BUILD_NUMBER` or remove the archive only when explicitly intended.
+- Default daily workflow is unreleased-first:
+  - Every bug fix, feature, or code change must be recorded in `CHANGELOG.md` under `## Unreleased`.
+  - Do not bump `MARKETING_VERSION` or `BUILD_NUMBER` during normal ongoing development.
+  - After code changes, regenerate the dev test build with `src/scripts/create_dev_test_build.sh` and validate against that latest dev build.
+  - Treat `src/dev_builds/VachaVox Dev Latest.app` as the test target until a release is explicitly requested.
 
-## Patch Lifecycle
+## Release Workflow (Explicit Trigger Only)
 
-- Keep active development-only overrides in `src/patch/`.
-- After a patch is included in a new release (version bump plus changelog entry), move that patch folder or `.patch` file from `src/patch/` to `src/old/patch/`.
-- Preserve patch names when archiving (example: `src/patch/model_path_patch/` -> `src/old/patch/model_path_patch/`).
-- Treat `src/patch/` as release-pending only, so `src/scripts/create_dev_test_build.sh` applies only unreleased patches.
-- Automatically update `Docs/patch-build-trace.md` whenever a patch is first shipped in a version/build.
-- If the shipped change maps to work tracking, add or update one short row in `Docs/ticket-log.md`.
+- Only run release versioning and packaging when the developer explicitly requests creating a new release build/version.
+- On explicit release requests:
+  - `version.env` remains the source of truth for release versioning.
+  - Update `MARKETING_VERSION` and `BUILD_NUMBER` for the release.
+  - Compile release notes from `CHANGELOG.md` `## Unreleased`, then ship and move those entries into the new released version section.
+  - Keep `README.md` version notes and `CHANGELOG.md` aligned with `version.env`.
+  - Run `Scripts/package_app.sh` to produce:
+    - `build/VachaVox.app` as the current runnable app.
+    - `build/VachaVox V${MARKETING_VERSION} B${BUILD_NUMBER}.app` as the archived build.
+  - Do not overwrite an existing versioned `.app`; bump `BUILD_NUMBER` or remove the archive only when explicitly intended.
 
 ## Current UI Direction
 
@@ -96,7 +105,7 @@
 
 - Keep VachaVox local-first. Audio and transcripts must not be uploaded by the app.
 - Transcription uses local FluidAudio Parakeet and WhisperKit/Core ML model folders.
-- Model storage is `~/vachavox/models`.
+- Active model storage is `/Users/macbookpro/local_ai_models/voice_models`.
 - Preserve the paste fallback: Paste mode uses Accessibility permission; Copy and Preview must work without Accessibility trust.
 - Preserve menu bar accessory behavior, microphone permission handling, and the concise privacy promise.
 - Be conservative with signing and entitlements. Keep `Sources/VachaVox/Resources/VachaVox.entitlements` minimal unless a feature requires a new entitlement.
@@ -105,7 +114,9 @@
 
 - Update docs with behavior changes, packaging changes, permissions changes, model path changes, UI changes, or brand asset changes.
 - At minimum, update `README.md` and `CHANGELOG.md` for user-visible or release-relevant work.
-- For patch-based releases, also update `Docs/patch-build-trace.md` and `Docs/ticket-log.md` in the same change.
+- Keep `CHANGELOG.md` `## Unreleased` current during ongoing development; do not wait for release day to capture change notes.
+- Use `Docs/development/module-map.md` before splitting work across multiple agents/developers to avoid module overlap conflicts.
+- `Docs/patch-workflow-reference.md` is optional legacy guidance only, not the active default process.
 - Keep current-state docs under `Docs/` and engineering context under `References/` aligned with the code.
 - Historical changelog entries may describe old behavior, but active setup and command docs must use VachaVox names and paths.
 
@@ -118,3 +129,5 @@
 - For permission/output work, verify Accessibility denied with Paste, Accessibility denied with Copy, microphone denied, and normal ready states.
 - For model work, verify no model installed, one ready model, download in progress, selected model deleted, and failed/unavailable model states when practical.
 - For git setup work, commit on `main`, create or update the private GitHub repo named `vachavox`, and push to `origin`.
+- If the best validation cannot run, explain the constraint and name the next
+  best check.

@@ -115,16 +115,25 @@ final class ReadinessAndOutputTests: XCTestCase {
         XCTAssertEqual(targetController.postPasteCount, 1)
     }
 
-    func testFormattedPopupTextTrimsWhitespaceAndClipsTo250() {
+    func testFormattedPopupTextTrimsWhitespaceWithoutClipping() {
         let long = String(repeating: "a", count: 280)
         let formatted = DictationCoordinator.formattedPopupText(from: "  \(long)   ")
         XCTAssertNotNil(formatted)
-        XCTAssertEqual(formatted?.count, 250)
-        XCTAssertTrue(formatted?.hasSuffix("…") == true)
+        XCTAssertEqual(formatted?.count, 280)
     }
 
     func testFormattedPopupTextReturnsNilWhenEmptyAfterTrim() {
         XCTAssertNil(DictationCoordinator.formattedPopupText(from: "   \n\t "))
+    }
+
+    func testPopupDisplayDurationScalesWithCharacterCountAndClamps() {
+        let shortDuration = DictationCoordinator.popupDisplayDuration(forCharacterCount: 10)
+        let mediumDuration = DictationCoordinator.popupDisplayDuration(forCharacterCount: 140)
+        let longDuration = DictationCoordinator.popupDisplayDuration(forCharacterCount: 2_000)
+
+        XCTAssertLessThan(shortDuration, mediumDuration)
+        XCTAssertEqual(shortDuration, 3_000_000_000)
+        XCTAssertEqual(longDuration, 12_000_000_000)
     }
 
     private func isolatedSettingsStore() -> SettingsStore {

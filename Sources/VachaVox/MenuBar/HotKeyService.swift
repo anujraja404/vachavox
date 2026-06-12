@@ -1,5 +1,4 @@
 import AppKit
-import Carbon
 import Foundation
 import KeyboardShortcuts
 
@@ -10,13 +9,34 @@ extension KeyboardShortcuts.Name {
     )
 }
 
+enum FunctionKeyTransition: Equatable {
+    case down
+    case up
+}
+
+struct FunctionKeyStateTracker {
+    private(set) var isDown = false
+
+    mutating func transition(isFunctionKeyEvent: Bool, functionModifierDown: Bool) -> FunctionKeyTransition? {
+        guard isFunctionKeyEvent || functionModifierDown != isDown else { return nil }
+        guard functionModifierDown != isDown else { return nil }
+
+        isDown = functionModifierDown
+        return functionModifierDown ? .down : .up
+    }
+
+    mutating func reset() {
+        isDown = false
+    }
+}
+
 @MainActor
 final class HotKeyService {
-    private var hotKeyRef: EventHotKeyRef?
-    private var eventHandler: EventHandlerRef?
+    private static let functionKeyCode: UInt16 = 63
+
     private var flagsMonitor: Any?
     private var localFlagsMonitor: Any?
-    private var isFnDown = false
+    private var functionKeyState = FunctionKeyStateTracker()
     private var keyboardHandlersRegistered = false
     private let model: AppModel
     private let start: @MainActor () -> Void
@@ -71,46 +91,21 @@ final class HotKeyService {
         }
     }
 
-    private func registerCarbonCommandShiftD() {
-        var eventType = EventTypeSpec(
-            eventClass: OSType(kEventClassKeyboard),
-            eventKind: UInt32(kEventHotKeyPressed)
-        )
-        InstallEventHandler(
-            GetApplicationEventTarget(),
-            { _, _, userData in
-                guard let userData else { return noErr }
-                let service = Unmanaged<HotKeyService>.fromOpaque(userData).takeUnretainedValue()
-                Task { @MainActor in
-                    service.handleKeyDown()
-                }
-                return noErr
-            },
-            1,
-            &eventType,
-            Unmanaged.passUnretained(self).toOpaque(),
-            &eventHandler
-        )
-
-        let hotKeyID = EventHotKeyID(signature: OSType(0x43484150), id: 1)
-        RegisterEventHotKey(
-            UInt32(kVK_ANSI_D),
-            UInt32(cmdKey | shiftKey),
-            hotKeyID,
-            GetApplicationEventTarget(),
-            0,
-            &hotKeyRef
-        )
-    }
-
     private func handleFlagsChanged(_ event: NSEvent) {
-        let fnDown = event.keyCode == 63 || event.modifierFlags.contains(.function)
-        guard fnDown != isFnDown else { return }
-        isFnDown = fnDown
-        if fnDown {
+        guard model.settings.hotkeyPreset == .functionKey else { return }
+
+        let transition = functionKeyState.transition(
+            isFunctionKeyEvent: event.keyCode == Self.functionKeyCode,
+            functionModifierDown: event.modifierFlags.contains(.function)
+        )
+
+        switch transition {
+        case .down:
             handleKeyDown()
-        } else {
+        case .up:
             handleKeyUp()
+        case nil:
+            break
         }
     }
 
@@ -139,14 +134,6 @@ final class HotKeyService {
     }
 
     func unregister() {
-        if let hotKeyRef {
-            UnregisterEventHotKey(hotKeyRef)
-            self.hotKeyRef = nil
-        }
-        if let eventHandler {
-            RemoveEventHandler(eventHandler)
-            self.eventHandler = nil
-        }
         if let flagsMonitor {
             NSEvent.removeMonitor(flagsMonitor)
             self.flagsMonitor = nil
@@ -155,15 +142,6 @@ final class HotKeyService {
             NSEvent.removeMonitor(localFlagsMonitor)
             self.localFlagsMonitor = nil
         }
-        isFnDown = false
-    }
-
-    deinit {
-        if let hotKeyRef {
-            UnregisterEventHotKey(hotKeyRef)
-        }
-        if let eventHandler {
-            RemoveEventHandler(eventHandler)
-        }
+        functionKeyState.reset()
     }
 }

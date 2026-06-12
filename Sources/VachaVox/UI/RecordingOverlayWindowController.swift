@@ -56,11 +56,14 @@ final class RecordingOverlayWindowController {
 
     private static func idealSize(phase: DictationPhase, popupVisible: Bool, popupText: String) -> CGSize {
         if popupVisible, !popupText.isEmpty {
-            let estimatedWidth = min(
+            let resultWidth = min(
                 RecordingOverlayPositioning.resultMaxWidth,
-                max(RecordingOverlayPositioning.resultMinWidth, CGFloat(popupText.count) * 4.8)
+                max(RecordingOverlayPositioning.resultMinWidth, CGFloat(popupText.count) * 5.4)
             )
-            return CGSize(width: estimatedWidth, height: 108)
+            let contentWidth = max(0, resultWidth - 28)
+            let textHeight = popupText.heightForOverlay(width: contentWidth)
+            let estimatedHeight = max(102, min(300, textHeight + 44))
+            return CGSize(width: resultWidth, height: estimatedHeight)
         }
 
         switch phase {
@@ -99,23 +102,31 @@ private struct RecordingOverlayView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Image(systemName: iconName)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.primary)
-                Text(titleText)
-                    .font(.system(size: 14, weight: .semibold))
-                    .lineLimit(1)
-                Spacer(minLength: 0)
-            }
-
+        VStack(alignment: .leading, spacing: showsResultText ? 7 : 8) {
             if showsResultText {
                 Text(model.popupResultText)
                     .font(.system(size: 13))
-                    .lineLimit(4)
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.primary)
+
+                HStack(spacing: 4) {
+                    Image(systemName: "command")
+                        .font(.system(size: 11, weight: .regular))
+                    Text("Use V to paste")
+                        .font(.system(size: 11, weight: .regular))
+                        .lineLimit(1)
+                }
+                .foregroundStyle(.secondary)
+            } else {
+                HStack(spacing: 8) {
+                    Image(systemName: iconName)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.primary)
+                    Text(titleText)
+                        .font(.system(size: 14, weight: .semibold))
+                        .lineLimit(1)
+                    Spacer(minLength: 0)
+                }
             }
         }
         .padding(.horizontal, 14)
@@ -137,7 +148,7 @@ private struct RecordingOverlayView: View {
 
     private var accessibilityLabel: String {
         if showsResultText {
-            return "VachaVox, transcript ready"
+            return "VachaVox, transcript copied. Use Command V to paste."
         }
         return model.phase == .listening ? "VachaVox, Listening" : "VachaVox, Transcribing locally"
     }
@@ -147,16 +158,10 @@ private struct RecordingOverlayView: View {
     }
 
     private var titleText: String {
-        if showsResultText {
-            return "Transcription copied"
-        }
         return model.phase == .listening ? "Listening" : "Transcribing locally"
     }
 
     private var iconName: String {
-        if showsResultText {
-            return "checkmark.circle.fill"
-        }
         return model.phase == .listening ? "mic.fill" : "waveform.and.magnifyingglass"
     }
 
@@ -174,5 +179,18 @@ private struct RecordingOverlayView: View {
     private var resultOpacity: Double {
         guard showsResultText else { return 1 }
         return model.popupResultFading ? 0 : 1
+    }
+}
+
+private extension String {
+    func heightForOverlay(width: CGFloat) -> CGFloat {
+        guard width > 0 else { return 0 }
+        let bounding = (self as NSString).boundingRect(
+            with: CGSize(width: width, height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: NSFont.systemFont(ofSize: 13)],
+            context: nil
+        )
+        return ceil(bounding.height)
     }
 }

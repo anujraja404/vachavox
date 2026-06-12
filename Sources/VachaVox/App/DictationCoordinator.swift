@@ -479,19 +479,20 @@ final class DictationCoordinator {
     }
 
     private func presentResultPopup(with transcript: String) {
-        guard let clipped = Self.formattedPopupText(from: transcript) else { return }
+        guard let popupText = Self.formattedPopupText(from: transcript) else { return }
 
         popupDismissTask?.cancel()
-        model.popupResultText = clipped
+        model.popupResultText = popupText
         model.popupResultFading = false
         model.popupResultVisible = true
 
         popupDismissTask = Task { @MainActor [weak self] in
             guard let self else { return }
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            let visibleDuration = Self.popupDisplayDuration(forCharacterCount: popupText.count)
+            try? await Task.sleep(nanoseconds: visibleDuration)
             guard !Task.isCancelled else { return }
             self.model.popupResultFading = true
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            try? await Task.sleep(nanoseconds: Self.popupFadeDurationNanoseconds)
             guard !Task.isCancelled else { return }
             self.model.popupResultVisible = false
             self.model.popupResultFading = false
@@ -504,13 +505,19 @@ final class DictationCoordinator {
             .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
             .trimmingCharacters(in: .whitespacesAndNewlines)
         guard !normalized.isEmpty else { return nil }
-
-        let maxCharacters = 250
-        if normalized.count > maxCharacters {
-            return String(normalized.prefix(maxCharacters - 1)) + "…"
-        }
         return normalized
     }
+
+    static func popupDisplayDuration(forCharacterCount characterCount: Int) -> UInt64 {
+        let minimumSeconds = 3.0
+        let maximumSeconds = 12.0
+        let averageReadingCharactersPerSecond = 14.0
+        let computedSeconds = 2.0 + (Double(max(characterCount, 1)) / averageReadingCharactersPerSecond)
+        let clampedSeconds = min(max(computedSeconds, minimumSeconds), maximumSeconds)
+        return UInt64(clampedSeconds * 1_000_000_000)
+    }
+
+    private static let popupFadeDurationNanoseconds: UInt64 = 800_000_000
 
     private func pollPermissionStatus() {
         permissionPollTask?.cancel()
