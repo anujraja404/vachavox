@@ -5,12 +5,12 @@ import Foundation
 @MainActor
 final class TextOutputService {
     private let permissionsService: PermissionAuthorizing
-    private let previewController: PreviewWindowController
+    private let previewController: PreviewPresenting
     private let outputTargetController: OutputTargetControlling
 
     init(
         permissionsService: PermissionAuthorizing,
-        previewController: PreviewWindowController,
+        previewController: PreviewPresenting,
         outputTargetController: OutputTargetControlling? = nil
     ) {
         self.permissionsService = permissionsService

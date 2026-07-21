@@ -1,9 +1,9 @@
 # Model Installation
 
-VachaVox scans this model root:
+The current VachaVox source scans this model root:
 
 ```text
-~/vachavox/models
+/Users/macbookpro/local_ai_models/voice_models
 ```
 
 ## Folder Layout
@@ -50,12 +50,12 @@ parakeet_vocab.json
 Manual download example:
 
 ```bash
-mkdir -p ~/vachavox/models/parakeet
+mkdir -p /Users/macbookpro/local_ai_models/voice_models/parakeet
 git lfs install
-git clone https://huggingface.co/FluidInference/parakeet-tdt-0.6b-v3-coreml ~/vachavox/models/parakeet/parakeet-tdt-0.6b-v3
+git clone https://huggingface.co/FluidInference/parakeet-tdt-0.6b-v3-coreml /Users/macbookpro/local_ai_models/voice_models/parakeet/parakeet-tdt-0.6b-v3
 ```
 
-The folder names intentionally match FluidAudio's local cache layout. If you have an older `*-coreml` folder under `~/vachavox/models/parakeet`, move or redownload it into the matching folder name without the `-coreml` suffix.
+The folder names intentionally match FluidAudio's local cache layout. If you have an older `*-coreml` folder under `/Users/macbookpro/local_ai_models/voice_models/parakeet`, move or redownload it into the matching folder name without the `-coreml` suffix.
 
 ## WhisperKit Requirements
 
@@ -69,4 +69,6 @@ AudioEncoder.mlmodelc or AudioEncoder.mlpackage
 TextDecoder.mlmodelc or TextDecoder.mlpackage
 ```
 
-Use Settings > Models > Download for the built-in WhisperKit catalog, or copy prepared Core ML folders into `~/vachavox/models/whisperkit/<folder>`.
+Use Settings > Models > Download for the built-in WhisperKit catalog, or copy prepared Core ML folders into `/Users/macbookpro/local_ai_models/voice_models/whisperkit/<folder>`.
+
+For the exact source-supported model IDs, configured resource guidance, and recovery boundaries, see [Supported models and permission recovery](evidence/supported-models-and-permissions.md).

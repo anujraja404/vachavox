@@ -14,6 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        let evidenceStartupProbe = ProcessInfo.processInfo.environment["VACHAVOX_EVIDENCE_STARTUP_PROBE"] == "1"
         NSApp.setActivationPolicy(.accessory)
 
         let permissionsService = PermissionsService()
@@ -68,6 +69,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         appModel.microphonePermission = permissionsService.microphonePermission
         appModel.accessibilityTrusted = permissionsService.isAccessibilityTrusted(prompt: false)
         coordinator.refreshModels()
+
+        if evidenceStartupProbe {
+            DispatchQueue.main.async {
+                NSApp.terminate(nil)
+            }
+            return
+        }
+
         coordinator.loadBestAvailableModelOnLaunch()
         hotKeyService.registerConfiguredHotKey()
         appModel.$settings

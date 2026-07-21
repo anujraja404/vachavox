@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-07-21T02:07:44Z",
+  "build": {
+    "app_version": "0.6.3",
+    "build_number": "23",
+    "git_commit": "df2c4044514ca98fcde12bb0f153effe6860a95d",
+    "git_short_commit": "df2c404",
+    "git_worktree_state": "dirty"
+  },
+  "device": {
+    "hardware_model": "Mac15,6",
+    "chip": "Apple M3 Pro",
+    "memory_bytes": "19327352832",
+    "macos_version": "26.5.1",
+    "macos_build": "25F80"
+  },
+  "app_startup": {
+    "name": "process_launch_through_applicationDidFinishLaunching",
+    "state": "Fresh process; model loading is intentionally excluded and measured separately.",
+    "sample_count": 1,
+    "seconds": [
+      0.35
+    ],
+    "median_seconds": 0.35,
+    "process_resources": {
+      "scope": "VachaVox startup probe process only; not model-inference memory.",
+      "user_cpu_seconds": 0.21,
+      "system_cpu_seconds": 0.04,
+      "maximum_resident_set_size_bytes": 114343936,
+      "peak_memory_footprint_bytes": 139461544
+    }
+  },
+  "model_inference": {
+    "capturedAtUTC": "2026-07-21T02:07:44Z",
+    "input": {
+      "durationSeconds": 5.159092970521542,
+      "fileName": "vachavox-benchmark-input.aiff",
+      "retention": "Temporary fixture deleted by Scripts/measure_local_inference.sh after the run.",
+      "source": "macOS say-generated English speech: VachaVox measures local transcription on this Mac using a generated English speech sample.",
+      "warmSampleCount": 3
+    },
+    "measurements": [
+      {
+        "name": "fresh_engine_prepare",
+        "sampleCount": 1,
+        "seconds": [
+          1.2340530157089233
+        ],
+        "state": "Fresh TranscriptionEngineRouter in this test process; operating-system caches are not cleared."
+      },
+      {
+        "name": "same_process_warm_prepare",
+        "sampleCount": 1,
+        "seconds": [
+          0.0000029802322387695312
+        ],
+        "state": "Same engine after a successful prepare call."
+      },
+      {
+        "name": "first_transcribe_file",
+        "sampleCount": 1,
+        "seconds": [
+          1.001513957977295
+        ],
+        "state": "First file transcription after fresh-engine preparation."
+      },
+      {
+        "name": "warm_transcribe_file",
+        "sampleCount": 3,
+        "seconds": [
+          0.7911509275436401,
+          0.7972890138626099,
+          0.8064990043640137
+        ],
+        "state": "Repeated file transcription with the same prepared engine and input."
+      }
+    ],
+    "model": {
+      "configuredRecommendedRAM": "16 GB",
+      "displayName": "Distil-Whisper Large v3",
+      "engine": "WhisperKit",
+      "id": "distil-whisper_distil-large-v3",
+      "localModelBytes": 1514540848,
+      "localModelPath": "/Users/macbookpro/local_ai_models/voice_models/whisperkit/distil-whisper_distil-large-v3"
+    },
+    "resourceMetrics": {
+      "reason": "CPU and memory are intentionally omitted because this XCTest process is not isolated from Core ML, framework, and test-runner allocation.",
+      "status": "not recorded"
+    },
+    "transcriptWasProduced": true
+  }
+}

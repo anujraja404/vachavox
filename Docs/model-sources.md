@@ -1,6 +1,6 @@
 # Model Sources
 
-VachaVox stores local speech models under `~/vachavox/models`.
+The current VachaVox source stores local speech models under `/Users/macbookpro/local_ai_models/voice_models`.
 
 ## Parakeet / FluidAudio
 
@@ -27,3 +27,5 @@ FluidAudio Parakeet models run individual Core ML passes at 16 kHz with a 240,00
 | Distil-Whisper Large v3 | `whisperkit/distil-whisper_distil-large-v3` | English | 16 GB |
 
 WhisperKit models come from `argmaxinc/whisperkit-coreml` and run locally through Core ML. They are not OpenAI cloud API calls.
+
+The RAM column is the app catalog's configured guidance, not a measured minimum or performance guarantee. See [local inference benchmark results](evidence/local-inference-benchmarks.md) for machine-specific measurements.

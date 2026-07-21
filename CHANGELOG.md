@@ -1,5 +1,14 @@
 # Version History
 
+## Unreleased
+
+### Evidence and reliability
+
+- Added a rerunnable local-inference measurement script, machine-readable result format, and current-machine benchmark evidence for the installed Parakeet TDT 0.6B v3 and Distil-Whisper Large v3 folders.
+- Added public source-backed model, local-inference, permission-recovery, and truth-file documentation with explicit measurement limits.
+- Added tests for microphone denial/revocation refresh, missing-model readiness, Paste fallback when Accessibility or the destination target is unavailable, and Copy/Preview operation without Accessibility permission.
+- Reworked the public README around verified local-inference boundaries, practical permission fallbacks, clearer setup, and evidence links.
+
 ## 0.6.3 - 2026-04-30
 
 Build: `23`

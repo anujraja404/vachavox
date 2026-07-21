@@ -2,7 +2,12 @@ import AppKit
 import SwiftUI
 
 @MainActor
-final class PreviewWindowController {
+protocol PreviewPresenting: AnyObject {
+    func show(text: String, accept: @escaping (String) -> Void)
+}
+
+@MainActor
+final class PreviewWindowController: PreviewPresenting {
     private var window: NSWindow?
 
     func show(text: String, accept: @escaping (String) -> Void) {

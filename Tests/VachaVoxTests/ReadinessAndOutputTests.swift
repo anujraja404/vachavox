@@ -43,6 +43,44 @@ final class ReadinessAndOutputTests: XCTestCase {
         XCTAssertEqual(model.readinessState, .modelLoadFailed("Could not load model"))
     }
 
+    func testMissingModelUsesDedicatedReadinessState() {
+        let model = AppModel(settingsStore: isolatedSettingsStore())
+        model.settings.outputMode = .copy
+        model.modelCatalog = ModelCatalog.descriptors
+        model.modelStatus = .missing
+        model.modelLoadState = .notLoaded
+
+        XCTAssertEqual(model.readinessState, .needsModel)
+    }
+
+    func testRefreshPermissionsReflectsRevokedMicrophoneAccess() {
+        let model = AppModel(settingsStore: isolatedSettingsStore())
+        let permissions = MockPermissions(accessibilityTrusted: true, microphonePermission: .granted)
+        let coordinator = makeCoordinator(model: model, permissions: permissions)
+
+        coordinator.refreshPermissions()
+        XCTAssertEqual(model.microphonePermission, .granted)
+
+        permissions.microphonePermission = .denied
+        coordinator.refreshPermissions()
+
+        XCTAssertEqual(model.microphonePermission, .denied)
+        XCTAssertEqual(model.readinessState, .needsMicrophone)
+    }
+
+    func testDeniedMicrophonePreventsDictationCapture() async throws {
+        let model = readyModel(outputMode: .copy)
+        let permissions = MockPermissions(accessibilityTrusted: true, microphonePermission: .denied)
+        let coordinator = makeCoordinator(model: model, permissions: permissions)
+
+        coordinator.startDictation()
+        try await Task.sleep(nanoseconds: 50_000_000)
+
+        XCTAssertEqual(model.microphonePermission, .denied)
+        XCTAssertEqual(model.phase, .error)
+        XCTAssertEqual(model.statusMessage, "Microphone access is required")
+    }
+
     func testLaunchFallsBackToBestInstalledModelWhenSavedSelectionIsMissing() throws {
         let tempRoot = try makeTempRoot()
         defer { try? FileManager.default.removeItem(at: tempRoot) }
@@ -115,6 +153,51 @@ final class ReadinessAndOutputTests: XCTestCase {
         XCTAssertEqual(targetController.postPasteCount, 1)
     }
 
+    func testPasteFallsBackToClipboardWhenTargetCannotBeRestored() async throws {
+        let target = OutputTargetSnapshot(processIdentifier: 42, bundleIdentifier: "example.app", localizedName: "Example")
+        let targetController = MockOutputTargetController(restoreResult: false)
+        let service = TextOutputService(
+            permissionsService: MockPermissions(accessibilityTrusted: true),
+            previewController: MockPreviewPresenter(),
+            outputTargetController: targetController
+        )
+
+        let result = try await service.deliver("hello", mode: .paste, pasteTarget: target)
+
+        XCTAssertEqual(result, .copiedPasteTargetUnavailable)
+        XCTAssertEqual(targetController.postPasteCount, 0)
+        XCTAssertEqual(NSPasteboard.general.string(forType: .string), "hello")
+    }
+
+    func testCopyDoesNotRequireAccessibility() async throws {
+        let preview = MockPreviewPresenter()
+        let service = TextOutputService(
+            permissionsService: MockPermissions(accessibilityTrusted: false),
+            previewController: preview,
+            outputTargetController: MockOutputTargetController()
+        )
+
+        let result = try await service.deliver("hello", mode: .copy)
+
+        XCTAssertEqual(result, .copied)
+        XCTAssertEqual(NSPasteboard.general.string(forType: .string), "hello")
+        XCTAssertTrue(preview.presentedTexts.isEmpty)
+    }
+
+    func testPreviewDoesNotRequireAccessibility() async throws {
+        let preview = MockPreviewPresenter()
+        let service = TextOutputService(
+            permissionsService: MockPermissions(accessibilityTrusted: false),
+            previewController: preview,
+            outputTargetController: MockOutputTargetController()
+        )
+
+        let result = try await service.deliver("hello", mode: .preview)
+
+        XCTAssertEqual(result, .previewing)
+        XCTAssertEqual(preview.presentedTexts, ["hello"])
+    }
+
     func testFormattedPopupTextTrimsWhitespaceWithoutClipping() {
         let long = String(repeating: "a", count: 280)
         let formatted = DictationCoordinator.formattedPopupText(from: "  \(long)   ")
@@ -149,6 +232,41 @@ final class ReadinessAndOutputTests: XCTestCase {
             copy.status = ids.contains(copy.id) ? .installed : .missing
             return copy
         }
+    }
+
+    private func readyModel(outputMode: OutputMode) -> AppModel {
+        let model = AppModel(settingsStore: isolatedSettingsStore())
+        let descriptor = model.selectedModel
+        model.settings.outputMode = outputMode
+        model.modelCatalog = catalogWithInstalledModels([descriptor.id])
+        model.modelStatus = .installed
+        model.modelLoadState = .loaded(
+            modelID: descriptor.id,
+            displayName: descriptor.displayName,
+            engine: descriptor.engine,
+            loadedAt: Date()
+        )
+        return model
+    }
+
+    private func makeCoordinator(model: AppModel, permissions: PermissionAuthorizing) -> DictationCoordinator {
+        let tempRoot = FileManager.default.temporaryDirectory
+            .appendingPathComponent("VachaVoxTests-\(UUID().uuidString)", isDirectory: true)
+        let modelStore = ModelStore(rootURL: tempRoot)
+        return DictationCoordinator(
+            model: model,
+            permissionsService: permissions,
+            audioCaptureService: AudioCaptureService(),
+            voiceActivityService: VoiceActivityService(),
+            modelStore: modelStore,
+            modelDownloadService: ModelDownloadService(modelStore: modelStore),
+            transcriptionEngine: MockTranscriptionEngine(),
+            outputService: TextOutputService(
+                permissionsService: permissions,
+                previewController: MockPreviewPresenter(),
+                outputTargetController: MockOutputTargetController()
+            )
+        )
     }
 
     private func makeTempRoot() throws -> URL {
@@ -212,11 +330,12 @@ private final class MockTranscriptionEngine: TranscriptionEngine {
 
 @MainActor
 private final class MockPermissions: PermissionAuthorizing {
-    var microphonePermission: PermissionState = .granted
+    var microphonePermission: PermissionState
     var accessibilityTrusted: Bool
 
-    init(accessibilityTrusted: Bool) {
+    init(accessibilityTrusted: Bool, microphonePermission: PermissionState = .granted) {
         self.accessibilityTrusted = accessibilityTrusted
+        self.microphonePermission = microphonePermission
     }
 
     func requestMicrophonePermission() async -> PermissionState {
@@ -229,6 +348,15 @@ private final class MockPermissions: PermissionAuthorizing {
 
     func requestAccessibilityPermission() -> Bool {
         accessibilityTrusted
+    }
+}
+
+@MainActor
+private final class MockPreviewPresenter: PreviewPresenting {
+    private(set) var presentedTexts: [String] = []
+
+    func show(text: String, accept: @escaping (String) -> Void) {
+        presentedTexts.append(text)
     }
 }
 

@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 @MainActor
 final class DictationCoordinator {
     private let model: AppModel
-    private let permissionsService: PermissionsService
+    private let permissionsService: PermissionAuthorizing
     private let audioCaptureService: AudioCaptureService
     private let voiceActivityService: VoiceActivityService
     private let modelStore: ModelStore
@@ -24,7 +24,7 @@ final class DictationCoordinator {
 
     init(
         model: AppModel,
-        permissionsService: PermissionsService,
+        permissionsService: PermissionAuthorizing,
         audioCaptureService: AudioCaptureService,
         voiceActivityService: VoiceActivityService,
         modelStore: ModelStore,
